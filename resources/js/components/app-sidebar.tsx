@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, ListTodo } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, ListTodo, Plus } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -17,9 +17,14 @@ const mainNavItems: NavItem[] = [
 
 const todoNavItems: NavItem[] = [
     {
-        title: 'Todo',
+        title: 'Todo List',
         href: '/todos',
         icon: ListTodo
+    },
+    {
+        title: 'Add Todo',
+        href: '/todos/create',
+        icon: Plus
     },
 ];
 
@@ -52,8 +57,8 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
-                <NavMain items={todoNavItems} />
+                <NavMain label='Platform' items={mainNavItems} />
+                <NavMain label='Applications' items={todoNavItems} />
             </SidebarContent>
 
             <SidebarFooter>

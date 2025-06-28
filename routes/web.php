@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('todos', [TodoController::class, 'index']);
+    Route::get('todos/create', [TodoController::class, 'create']);
 });
 
 require __DIR__.'/settings.php';

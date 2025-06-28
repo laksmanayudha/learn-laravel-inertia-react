@@ -23,4 +23,9 @@ class TodoController extends Controller
 
         return Inertia::render('todos/index', compact('todos'));
     }
+
+    public function create()
+    {
+        return Inertia::render('todos/create');
+    }
 }

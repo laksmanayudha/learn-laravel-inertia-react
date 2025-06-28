@@ -15,10 +15,9 @@ export default function TodoIndex({ todos }: { todos: TodoItem[] }) {
       <Head title="Todos List" />
       <div className="p-4">
         <h2>{auth.user.name}</h2>
-
         <ul>
-          {todos && todos.map(({ title }) => (
-            <li>{title}</li>
+          {todos && todos.map(({ title }, index) => (
+            <li key={`todos-${index}`}>{title}</li>
           ))}
         </ul>
       </div>
