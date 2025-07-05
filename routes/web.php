@@ -13,8 +13,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::get('todos', [TodoController::class, 'index'])->name('todo.index');
-    Route::get('todos/create', [TodoController::class, 'create'])->name('todo.create');
+    Route::resource('todos', TodoController::class);
 });
 
 require __DIR__.'/settings.php';

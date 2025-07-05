@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -10,22 +11,26 @@ class TodoController extends Controller
 {
     public function index()
     {
-        $todos = [
-            [
-                'title' => 'Todo Title One',
-                'body' => 'Todo Body One',
-            ],
-            [
-                'title' => 'Todo Title Two',
-                'body' => 'Todo Body Two',
-            ],
-        ];
+        $pagination = Todo::paginate(5);
 
-        return Inertia::render('todos/index', compact('todos'));
+        return Inertia::render('todos/index', compact('pagination'));
     }
 
     public function create()
     {
         return Inertia::render('todos/create');
+    }
+
+    public function store(Request $request)
+    {
+        $fields = $request->validate([
+            'title' => ['required', 'string'],
+            'body' => ['required', 'string']
+        ]);
+
+        Todo::create($fields);
+
+        // return redirect()->route('todos.index');
+        return to_route('todos.index');
     }
 }
