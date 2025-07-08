@@ -11,7 +11,7 @@ class TodoController extends Controller
 {
     public function index()
     {
-        $pagination = Todo::paginate(5);
+        $pagination = Todo::latest()->paginate(5);
 
         return Inertia::render('todos/index', compact('pagination'));
     }

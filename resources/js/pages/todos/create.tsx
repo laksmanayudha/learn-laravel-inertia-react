@@ -1,6 +1,6 @@
 import AppLayout from "@/layouts/app-layout";
 import { Head, useForm } from "@inertiajs/react";
-import { Theme } from "@radix-ui/themes";
+import { Button, TextArea, TextField, Theme, Text, Spinner } from "@radix-ui/themes";
 import { FormEventHandler, ReactElement } from "react";
 
 type TodoFormData = {
@@ -22,34 +22,41 @@ const TodoCreate = () =>  {
     post('/todos');
   };
 
-  console.log({ errors, processing });
-
   return (
     <>
       <Head title="Create a Todo" />
       
       <div className="p-4">
-        <h1>Create a Todo</h1>
+        <h1 className="mb-2">Create a Todo</h1>
         <form className="flex flex-col w-1/2 gap-2" onSubmit={handleFormSubmit}>
-          <input
-            type="text"
-            className={errors.title ? '!border-red-500 border' : 'border'}
-            value={data.title}
-            onChange={(e) => setData('title', e.target.value)}
-          />
-          {errors.title && (<small className="text-red-500">{errors.title}</small>)}
+          <div className="mb-2">
+            <Text className="text-sm" as="label" htmlFor="titleTextField">Title Title</Text>
+            <TextField.Root
+              id="titleTextField"
+              placeholder="Your Title"
+              value={data.title}
+              onChange={(e) => setData('title', e.target.value)}
+              className={errors.title ? '!border-red-500 border' : 'border'}
+            />
+            {errors.title && (<small className="text-red-500">{errors.title}</small>)}
+          </div>         
 
-          <textarea
-            className={errors.body ? '!border-red-500 border' : 'border'}
-            value={data.body}
-            onChange={(e) => setData('body', e.target.value)}
-          ></textarea>
-          {errors.body && (<small className="text-red-500">{errors.body}</small>)}
+          <div className="mb-2">
+            <Text className="text-sm" as="label" htmlFor="bodyTextArea">Title Body</Text>
+            <TextArea
+              id="bodyTextArea"
+              placeholder="Write your todo body here..."
+              value={data.body}
+              onChange={(e) => setData('body', e.target.value)}
+              className={errors.body ? '!border-red-500 border' : 'border'}
+            />
+            {errors.body && (<small className="text-red-500">{errors.body}</small>)}
+          </div>
 
-          <button
-            className="border"
-            disabled={processing}
-          >Save</button>
+          <Button disabled={processing}>
+            <Spinner loading={processing} />
+            Save
+          </Button>
         </form>
       </div>
     </>

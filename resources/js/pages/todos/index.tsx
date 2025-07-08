@@ -3,6 +3,7 @@ import { Table, Theme } from "@radix-ui/themes";
 import AppLayout from "@/layouts/app-layout";
 import { SharedData } from "@/types";
 import { Head, Link, usePage } from "@inertiajs/react";
+// import { useRoute } from "ziggy-js";
 
 type TodoItem = {
   title: string;
@@ -34,7 +35,6 @@ type PaginateResponse = {
 export default function TodoIndex({ pagination }: { pagination: PaginateResponse }) {
   const { auth } = usePage<SharedData>().props;
   const { data, links } = pagination;
-  console.log(pagination);
 
   return (
     <AppLayout>
