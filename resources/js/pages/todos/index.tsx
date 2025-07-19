@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { Table, Theme } from "@radix-ui/themes";
+import { Callout, Table, Theme } from "@radix-ui/themes";
 import AppLayout from "@/layouts/app-layout";
 import { SharedData } from "@/types";
 import { Head, Link, usePage } from "@inertiajs/react";
+import TodoDeleteButton from "./components/delete-button";
+import { Info } from "lucide-react";
 // import { useRoute } from "ziggy-js";
 
 type TodoItem = {
+  id: number,
   title: string;
   body: string
 };
@@ -33,7 +36,8 @@ type PaginateResponse = {
 };
 
 export default function TodoIndex({ pagination }: { pagination: PaginateResponse }) {
-  const { auth } = usePage<SharedData>().props;
+  const { auth, flash } = usePage<SharedData>().props;
+  const { message: flashMessage } = flash as { message: string | null };
   const { data, links } = pagination;
 
   return (
@@ -48,18 +52,40 @@ export default function TodoIndex({ pagination }: { pagination: PaginateResponse
             </Button>
 
             <div className="mt-4">
+              {flashMessage && (
+                <Callout.Root color="green">
+                  <Callout.Icon>
+                    <Info />
+                  </Callout.Icon>
+                  <Callout.Text>{flashMessage}</Callout.Text>
+                </Callout.Root>
+              )}
+            </div>
+
+            <div className="mt-4">
               <Table.Root variant="surface">
                 <Table.Header>
-                  <Table.ColumnHeaderCell>Todo Title</Table.ColumnHeaderCell>
-                  <Table.ColumnHeaderCell>Todo Description</Table.ColumnHeaderCell>
+                  <Table.Row>
+                    <Table.ColumnHeaderCell>Todo Title</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell>Todo Description</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell>Action</Table.ColumnHeaderCell>
+                  </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {data.length && data.map(({ title, body }, index) => (
-                    <Table.Row key={index}>
+                  {data.length
+                  ? data.map(({ title, body, id }) => (
+                    <Table.Row key={id}>
                       <Table.RowHeaderCell>{title}</Table.RowHeaderCell>
                       <Table.Cell>{body}</Table.Cell>
+                      <Table.Cell>
+                        <TodoDeleteButton todoId={id}></TodoDeleteButton>
+                      </Table.Cell>
                     </Table.Row>
-                  ))}
+                  ))
+                : (<Table.Row key={0}>
+                      <Table.Cell colSpan={3}>No Data Available</Table.Cell>
+                    </Table.Row>)
+                }
                 </Table.Body>
               </Table.Root>
             </div>
