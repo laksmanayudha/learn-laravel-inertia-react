@@ -5,6 +5,7 @@ import { SharedData } from "@/types";
 import { Head, Link, usePage } from "@inertiajs/react";
 import TodoDeleteButton from "./components/delete-button";
 import { Info } from "lucide-react";
+import { useEffect, useState } from "react";
 // import { useRoute } from "ziggy-js";
 
 type TodoItem = {
@@ -35,10 +36,25 @@ type PaginateResponse = {
   links: PaginationLink[]
 };
 
+type Flash = {
+  message: string | null
+}
+
 export default function TodoIndex({ pagination }: { pagination: PaginateResponse }) {
   const { auth, flash } = usePage<SharedData>().props;
-  const { message: flashMessage } = flash as { message: string | null };
   const { data, links } = pagination;
+  const [calloutFlash, setCalloutFlash] = useState(flash);
+  const { message: calloutMessage } = calloutFlash as Flash
+
+  useEffect(() => {
+    setCalloutFlash(flash);
+  }, [flash]);
+
+  if (calloutMessage) {
+    setTimeout(() => {
+      setCalloutFlash((prev: Flash) => ({...prev, message: null}));
+    }, 2000);
+  }
 
   return (
     <AppLayout>
@@ -52,12 +68,12 @@ export default function TodoIndex({ pagination }: { pagination: PaginateResponse
             </Button>
 
             <div className="mt-4">
-              {flashMessage && (
+              {calloutMessage && (
                 <Callout.Root color="green">
                   <Callout.Icon>
                     <Info />
                   </Callout.Icon>
-                  <Callout.Text>{flashMessage}</Callout.Text>
+                  <Callout.Text>{calloutMessage}</Callout.Text>
                 </Callout.Root>
               )}
             </div>
