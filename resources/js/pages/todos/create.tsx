@@ -30,7 +30,7 @@ const TodoCreate = () =>  {
         <h1 className="mb-2">Create a Todo</h1>
         <form className="flex flex-col w-1/2 gap-2" onSubmit={handleFormSubmit}>
           <div className="mb-2">
-            <Text className="text-sm" as="label" htmlFor="titleTextField">Title Title</Text>
+            <Text className="text-sm" as="label" htmlFor="titleTextField">Todo Title</Text>
             <TextField.Root
               id="titleTextField"
               placeholder="Your Title"

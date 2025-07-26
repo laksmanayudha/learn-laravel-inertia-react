@@ -40,4 +40,11 @@ class TodoController extends Controller
 
         return to_route('todos.index')->with('message', 'Todo deleted successfully');
     }
+
+    public function edit(Request $request, $id)
+    {
+        return Inertia::render('todos/edit', [
+            'todo' => Todo::find($id)
+        ]);
+    }
 }

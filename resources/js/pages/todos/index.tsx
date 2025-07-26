@@ -1,12 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Callout, Table, Theme } from "@radix-ui/themes";
-import AppLayout from "@/layouts/app-layout";
-import { SharedData } from "@/types";
-import { Head, Link, usePage } from "@inertiajs/react";
-import TodoDeleteButton from "./components/delete-button";
-import { Info } from "lucide-react";
-import { useEffect, useState } from "react";
-// import { useRoute } from "ziggy-js";
+// import { useRoute } from 'ziggy-js';
+import { Button } from '@/components/ui/button';
+import { Callout, Flex, Table, Theme } from '@radix-ui/themes';
+import { SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { Info } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import AppLayout from '@/layouts/app-layout';
+import TodoDeleteButton from './components/delete-button';
+import TodoEditButton from './components/edit-button';
 
 type TodoItem = {
   id: number,
@@ -38,13 +39,22 @@ type PaginateResponse = {
 
 type Flash = {
   message: string | null
-}
+};
+
+type ClickParam = {
+  todoId: number,
+  get: (url: string) => void
+};
 
 export default function TodoIndex({ pagination }: { pagination: PaginateResponse }) {
   const { auth, flash } = usePage<SharedData>().props;
   const { data, links } = pagination;
   const [calloutFlash, setCalloutFlash] = useState(flash);
-  const { message: calloutMessage } = calloutFlash as Flash
+  const { message: calloutMessage } = calloutFlash as Flash;
+
+  const handleEditButton = async ({ get, todoId }: ClickParam) => {
+    get(`/todos/${todoId}/edit`);
+  }
 
   useEffect(() => {
     setCalloutFlash(flash);
@@ -94,7 +104,10 @@ export default function TodoIndex({ pagination }: { pagination: PaginateResponse
                       <Table.RowHeaderCell>{title}</Table.RowHeaderCell>
                       <Table.Cell>{body}</Table.Cell>
                       <Table.Cell>
-                        <TodoDeleteButton todoId={id}></TodoDeleteButton>
+                        <Flex gap="2">
+                          <TodoDeleteButton todoId={id} />
+                          <TodoEditButton todoId={id} handleTodoEdit={handleEditButton} />
+                        </Flex>
                       </Table.Cell>
                     </Table.Row>
                   ))
